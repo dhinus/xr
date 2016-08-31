@@ -2,6 +2,8 @@
  * xr (c) James Cleveland 2015
  * URL: https://github.com/radiosilence/xr
  * License: BSD
+ *
+ * Modified by Francesco Negri <francesconegri@gmail.com>
  */
 
 import encode from 'querystring/encode';
@@ -26,6 +28,10 @@ const Events = {
   LOAD_END: 'loadend',
 };
 
+// Avoid exceptions in IE < 8
+const stringify = (typeof JSON === 'undefined') ? () => {} : JSON.stringify;
+const parse = (typeof JSON === 'undefined') ? () => {} : JSON.parse;
+
 const defaults = {
   method: Methods.GET,
   data: undefined,
@@ -33,8 +39,8 @@ const defaults = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
   },
-  dump: JSON.stringify,
-  load: JSON.parse,
+  dump: stringify,
+  load: parse,
   xmlHttpRequest: () => new XMLHttpRequest(),
   promise: fn => new Promise(fn),
   withCredentials: false,
